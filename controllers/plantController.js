@@ -13,13 +13,15 @@ const plantController = {
       .then((data) => res.json(data))
       .catch((err) => console.log(err.message));
   },
+  // maybe add these to a separate plant instance controller
+  // you need to put them on repo arr of that user
   createPlantInstance: async (req, res) => {
     const { id } = req.params;
     try {
       const plantinstance = new PlantInstance({
         plant: id,
         nickname: req.body.nickname,
-        waterdate: req.body.watering,
+        waterDate: req.body.waterDate,
         waterInterval: req.body.waterInterval,
         fertilizeDate: req.body.fertilizeDate,
         fertilizeInterval: req.body.fertilizeInterval,
@@ -28,15 +30,25 @@ const plantController = {
         happiness: req.body.happiness,
       });
       await plantinstance.save();
-      res.send(plantinstance);
+      res.send(plantinstance); // build obj and attch more info
     } catch (err) {
       console.log(err.message);
     }
   },
   getAllRepo: (req, res) => {
     PlantInstance.find()
+      .populate("plant")
       .then((data) => res.json(data))
       .catch((err) => console.log(err.message));
+  },
+  deletePlantInstance: (req, res) => {
+    const { id } = req.body;
+    // delete also from User repo arr ??
+    console.log("this is id", id);
+    PlantInstance.deleteOne({ _id: id })
+      .then((data) => res.json(data))
+      .then((err) => console.log(err.message));
+    console.log(id);
   },
 };
 

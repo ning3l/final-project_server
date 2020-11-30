@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 
 const plantSchema = new mongoose.Schema({
   latin: { type: String, maxlength: 50 },
+  description: { type: String },
   common: { type: String, maxlength: 50 },
   srcImg: { type: String, required: true },
   site: { type: String },
