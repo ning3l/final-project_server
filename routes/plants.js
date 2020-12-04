@@ -2,28 +2,20 @@ const express = require("express");
 const router = express.Router();
 const plantController = require("../controllers/plantController");
 const authorizeUser = require("../middleware/authorizeUser");
+const userContext = require("../middleware/userContext");
 
 // ARCHETYPES
-router.get("/", plantController.getAllPlanst);
+router.get("/", plantController.getAllPlants);
 
 // INSTANCES
-router.delete("/del", plantController.deletePlantInstance);
-router.get("/repository", plantController.getAllRepo);
+router.delete("/del", authorizeUser, plantController.deletePlantInstance);
+router.get("/repository/me", authorizeUser, plantController.getAllRepo); // filters for user who made req
+router.get("/repository", authorizeUser, plantController.getUserRepo); // could give you so else's plants ???
 
 // ARCHETYPES
 router.get("/:id", plantController.getSinglePlant);
 
 // INSTANCES
-router.post("/:id", plantController.createPlantInstance);
-
-// you can now protect routes with your auth middleware
-// whenever you make a req on a protected route, it will send
-// Authorization: [‘Bearer’, ‘fdngdjglndfjg’]  with it
-
-// this means inside our plantcontroller, we have access to payload obj,
-// meaning we now have context about who made the req
-
-// so we can now eg extract the user id, search the database and retrieve
-// all plant instances belonging to that user
+router.post("/:id", authorizeUser, plantController.createPlantInstance);
 
 module.exports = router;

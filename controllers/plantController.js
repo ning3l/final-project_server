@@ -1,8 +1,9 @@
 const Plant = require("../models/Plant");
 const PlantInstance = require("../models/PlantInstance");
+const User = require("../models/User");
 
 const plantController = {
-  getAllPlanst: (req, res) => {
+  getAllPlants: (req, res) => {
     Plant.find()
       .then((data) => res.json(data))
       .catch((err) => console.log(err.message));
@@ -16,10 +17,13 @@ const plantController = {
   // maybe add these to a separate plant instance controller
   // you need to put them on repo arr of that user
   createPlantInstance: async (req, res) => {
-    const { id } = req.params;
+    const { _id } = req.userPayload; // user id
+    const { id } = req.params; // this is the plant id
     try {
-      const plantinstance = new PlantInstance({
+      const user = await User.findById(_id);
+      const plantinstance = await new PlantInstance({
         plant: id,
+        user: _id,
         nickname: req.body.nickname,
         waterDate: req.body.waterDate,
         waterInterval: req.body.waterInterval,
@@ -29,26 +33,48 @@ const plantController = {
         repotInterval: req.body.repotInterval,
         happiness: req.body.happiness,
       });
+      user.repository.push(plantinstance._id);
+      await user.save();
       await plantinstance.save();
-      res.send(plantinstance); // build obj and attch more info
+      res.send(plantinstance);
     } catch (err) {
       console.log(err.message);
     }
   },
+  // GET REPO FROM CURR LOGGED IN USER
   getAllRepo: (req, res) => {
-    PlantInstance.find()
+    const { _id } = req.userPayload;
+    PlantInstance.find({ user: _id })
       .populate("plant")
       .then((data) => res.json(data))
       .catch((err) => console.log(err.message));
   },
-  deletePlantInstance: (req, res) => {
-    const { id } = req.body;
-    // delete also from User repo arr ??
-    console.log("this is id", id);
-    PlantInstance.deleteOne({ _id: id })
-      .then((data) => res.json(data))
-      .then((err) => console.log(err.message));
-    console.log(id);
+  // GET A USER REPO ON PAGE VISIT - you need to change id tho
+  getUserRepo: async (req, res) => {
+    const { _id, username } = req.userPayload;
+    let userRepo;
+    try {
+      userRepo = await User.findById(_id, "repository").populate(
+        "repository",
+        PlantInstance
+      );
+      res.send(userRepo);
+    } catch (err) {
+      console.log(err);
+    }
+  },
+  deletePlantInstance: async (req, res) => {
+    try {
+      const { username } = req.userPayload;
+      const { id } = req.body;
+      await User.findOne({ username }).update({
+        $pull: { repository: id },
+      });
+      await PlantInstance.deleteOne({ _id: id });
+      res.send(id);
+    } catch (err) {
+      console.log(err.message);
+    }
   },
 };
 

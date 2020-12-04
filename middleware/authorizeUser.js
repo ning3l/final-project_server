@@ -1,6 +1,7 @@
 const jwt = require("jsonwebtoken");
 
 const authorizeUser = (req, res, next) => {
+  console.log(req.headers);
   const authHeader = req.headers["authorization"];
   const token = authHeader && authHeader.split(" ")[1];
   console.log("auth header", authHeader);
@@ -13,7 +14,7 @@ const authorizeUser = (req, res, next) => {
         console.log(err.message);
         return res.status(403).send("invalid token");
       } else {
-        req.userPayload = payload; // here, you can attach specific user info
+        req.userPayload = payload;
         next();
       }
     });

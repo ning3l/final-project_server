@@ -3,14 +3,15 @@ const Schema = mongoose.Schema;
 const jwt = require("jsonwebtoken");
 
 const userSchema = new Schema({
-  // email: { type: String, min: 8, max: 30, required: true, unique: true },
   username: { type: String, min: 3, max: 30, required: true, unique: true },
   password: { type: String, required: true },
-  profileImg: { type: String },
-  bio: { type: String },
-  plantsitting: { type: Boolean },
-  repository: [{ type: Schema.Types.ObjectId, ref: "Plant" }],
-  wishlist: [{ type: Schema.Types.ObjectId, ref: "Plant" }],
+  profileImg: { type: String, default: "" },
+  bio: { type: String, default: "" },
+  plantsitting: { type: Boolean, default: false },
+  zip: { type: String, default: "" },
+  repository: [{ type: Schema.Types.ObjectId, ref: "PlantInstance" }],
+  wishlist: [],
+  // wishlist: [{ type: Schema.Types.ObjectId, ref: "Plant" }],
 });
 
 userSchema.methods.createToken = function () {
