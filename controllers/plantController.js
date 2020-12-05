@@ -1,3 +1,4 @@
+const { response } = require("express");
 const Plant = require("../models/Plant");
 const PlantInstance = require("../models/PlantInstance");
 const User = require("../models/User");
@@ -33,10 +34,13 @@ const plantController = {
         repotInterval: req.body.repotInterval,
         happiness: req.body.happiness,
       });
-      user.repository.push(plantinstance._id);
-      await user.save();
       await plantinstance.save();
-      res.send(plantinstance);
+      await user.repository.push(plantinstance._id);
+      await user.save();
+      let hi = await PlantInstance.findOne({ _id: plantinstance._id }).populate(
+        "plant"
+      );
+      res.send(hi);
     } catch (err) {
       console.log(err.message);
     }
@@ -67,7 +71,7 @@ const plantController = {
     try {
       const { username } = req.userPayload;
       const { id } = req.body;
-      await User.findOne({ username }).update({
+      await User.findOne({ username }).updateOne({
         $pull: { repository: id },
       });
       await PlantInstance.deleteOne({ _id: id });
@@ -76,6 +80,18 @@ const plantController = {
       console.log(err.message);
     }
   },
+  // deleteWishlistPlant: async (req, res) => {
+  //   try {
+  //     const { username } = req.userPayload;
+  //     const { name } = req.body;
+  //     await User.findOne({ username }).updateOne({
+  //       $pull: { wishlist: name },
+  //     });
+  //     res.send("success");
+  //   } catch (err) {
+  //     console.log(err.message);
+  //   }
+  // },
 };
 
 module.exports = plantController;

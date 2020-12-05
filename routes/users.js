@@ -17,6 +17,7 @@ router.post("/register", userController.createUser);
 // GET ALL WISHLIST PLANTS FOR CURR LOGGED IN USER
 router.post("/wish", authorizeUser, userController.addToWishlist);
 router.get("/wish", authorizeUser, userController.getWishlist);
+router.delete("/wish", authorizeUser, userController.deleteWishlistPlant);
 
 // router.post("/", (req, res) => {
 //   const { username, password, plantsitting } = req.body;

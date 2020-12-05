@@ -21,7 +21,7 @@ const userController = {
       const user = await User.findOne({ username });
       user.wishlist.push(plantName);
       await user.save();
-      res.send("successfully added to wishlist!");
+      res.send(plantName);
     } catch (err) {
       console.log(err);
     }
@@ -33,6 +33,18 @@ const userController = {
       res.send(user.wishlist);
     } catch (err) {
       console.log(err);
+    }
+  },
+  deleteWishlistPlant: async (req, res) => {
+    try {
+      const { username } = req.userPayload;
+      const { name } = req.body;
+      await User.findOne({ username }).updateOne({
+        $pull: { wishlist: name },
+      });
+      res.send("success");
+    } catch (err) {
+      console.log(err.message);
     }
   },
 };
