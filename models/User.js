@@ -11,7 +11,7 @@ const userSchema = new Schema({
   zip: { type: String, default: "" },
   repository: [{ type: Schema.Types.ObjectId, ref: "PlantInstance" }],
   wishlist: [],
-  // wishlist: [{ type: Schema.Types.ObjectId, ref: "Plant" }],
+  events: [{ type: Schema.Types.ObjectId, ref: "Event" }],
 });
 
 userSchema.methods.createToken = function () {

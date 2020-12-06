@@ -39,9 +39,10 @@ let today = Date.now();
 function calculateNotification(start, interval) {
   if (!start || !interval) return "N/A";
   if (isAfter(start, today)) return format(start, dateFormat);
-  let diff = differenceInCalendarDays(today, start);
-  let daysUntil = interval - (diff % interval);
-  let result = addDays(today, daysUntil);
+  let diff = (differenceInDays(today, start) + 1) % interval;
+  let rest = interval - diff;
+  if (rest === interval) return format(today, dateFormat);
+  let result = addDays(today, rest);
   return format(result, dateFormat);
 }
 

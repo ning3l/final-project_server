@@ -6,11 +6,14 @@ var express = require("express");
 var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
+const upload = require("./utils/uploadProfilePic");
+const authorizeUser = require("./middleware/authorizeUser");
 
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
 const plantRouter = require("./routes/plants");
 const authenticationRouter = require("./routes/authentication");
+const eventRouter = require("./routes/events");
 
 var app = express();
 
@@ -24,6 +27,7 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use("/", indexRouter);
 app.use("/api/users", usersRouter);
 app.use("/api/plants", plantRouter);
+app.use("/api/events", eventRouter);
 app.use("/api/auth", authenticationRouter);
 
 module.exports = app;

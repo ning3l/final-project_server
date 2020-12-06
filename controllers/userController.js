@@ -47,6 +47,29 @@ const userController = {
       console.log(err.message);
     }
   },
+  uploadPic: async (req, res) => {
+    const { file, fileValidationError } = req;
+    const { username } = req.userPayload;
+    if (!file) {
+      return res.status(400).send("Please upload a file"); // 400 Bad Request
+    }
+    if (fileValidationError) {
+      return res.status(400).send(fileValidationError);
+    }
+    try {
+      await User.update(
+        { username: username },
+        {
+          profileImg: "some new info",
+        }
+      );
+    } catch (err) {
+      console.log(err.message);
+    }
+    console.log(file);
+    // res.send("success");
+    res.send({ pathToImage: `/${file.filename}` });
+  },
 };
 
 module.exports = userController;
