@@ -25,38 +25,13 @@ router.get("/me", authorizeUser, async (req, res) => {
   }
 });
 
-// ATTEND AN EVENT
-// push event id to the events arr of user who made the req
-// push user id to this event's attendees arr
-router.post("/attend", authorizeUser, async (req, res) => {
-  console.log("EVENT ID", req.body.eventId);
-  const { eventId } = req.body;
-  const { _id } = req.userPayload;
-
-  // ACHTUNG: event you send back after attend is not yet populated
-  const user = await User.findById(_id);
-  const event = await Event.findById({ _id: eventId });
-  await event.attendees.push(_id);
-  await user.events.push(event);
-  await event.save();
-  await user.save();
-  console.log(event);
-  res.send(event);
-  // get attendee id from payload & push user in this events attendee array
-  //   Event.find()
-  //     .then((data) => res.json(data))
-  //     .catch((err) => console.log(err.message));
-});
-
 // CREATE AN EVENT + ASSIGN TO CREATOR
-// push event to user event arr
-// whenever you create an event, also push user into attendees array
-// delete / update event => check if _id === creator
 router.post("/", authorizeUser, async (req, res) => {
-  const { _id } = req.userPayload;
+  const { _id, username } = req.userPayload;
   try {
     const user = await User.findById(_id);
     const event = await new Event({
+      host: username,
       title: req.body.title,
       description: req.body.description,
       date: req.body.date,
@@ -69,7 +44,7 @@ router.post("/", authorizeUser, async (req, res) => {
       img: req.body.img,
       creator: _id,
     });
-    await event.attendees.push(_id); // this does not work ???
+    await event.attendees.push(_id);
     await event.save();
     await user.events.push(event._id);
     await user.save();
@@ -79,5 +54,44 @@ router.post("/", authorizeUser, async (req, res) => {
     console.log(err.message);
   }
 });
+
+// ATTEND EVENT
+router.post("/attend", authorizeUser, async (req, res) => {
+  console.log("EVENT ID", req.body.eventId);
+  const { eventId } = req.body;
+  const { _id } = req.userPayload;
+  const user = await User.findById(_id);
+  const event = await Event.findById({ _id: eventId });
+  await event.attendees.push(_id);
+  await user.events.push(event);
+  await event.save();
+  await user.save();
+  console.log(event);
+  res.send(event);
+});
+
+// LEAVE EVENT
+router.post("/leave", authorizeUser, async (req, res) => {
+  const { eventId } = req.body;
+  const { _id, username } = req.userPayload;
+  console.log(_id);
+  try {
+    // this ain't doin' shit for some reason
+    await Event.findById(eventId).updateMany({
+      $pull: { attendees: { _id } },
+    });
+    // this works fine
+    await User.findOne({ username }).updateOne({
+      $pull: { events: eventId },
+    });
+    res.send(eventId);
+  } catch (err) {
+    console.log(err.message);
+  }
+});
+
+// CANCEL EVENT
+
+// UPDATE EVENT
 
 module.exports = router;

@@ -80,6 +80,31 @@ const plantController = {
       console.log(err.message);
     }
   },
+  updatePlantInstance: async (req, res) => {
+    const { plantUpdateInput, id } = req.body;
+    // const edit = await PlantInstance.findOne({ _id: id });
+    // res.send(edit);
+    try {
+      let updatedInstance = await PlantInstance.findByIdAndUpdate(
+        { _id: id },
+        {
+          nickname: plantUpdateInput.nickname,
+          waterDate: plantUpdateInput.waterDate,
+          waterInterval: plantUpdateInput.waterInterval,
+          fertilizeDate: plantUpdateInput.fertilizeDate,
+          fertilizeInterval: plantUpdateInput.fertilizeInterval,
+          repotDate: plantUpdateInput.repotDate,
+          repotInterval: plantUpdateInput.repotInterval,
+          happiness: plantUpdateInput.happiness,
+        },
+        { new: true }
+      ).populate("plant");
+      // await updatedInstance.save();
+      res.send(updatedInstance);
+    } catch (err) {
+      console.log(err.message);
+    }
+  },
   // deleteWishlistPlant: async (req, res) => {
   //   try {
   //     const { username } = req.userPayload;

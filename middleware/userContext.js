@@ -1,5 +1,6 @@
 const User = require("../models/User");
 
+// not currently in use
 const userContext = async (req, res, next) => {
   const { username } = req.userPayload;
   const user = await User.findOne({ username });

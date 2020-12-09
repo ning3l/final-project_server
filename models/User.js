@@ -5,10 +5,10 @@ const jwt = require("jsonwebtoken");
 const userSchema = new Schema({
   username: { type: String, min: 3, max: 30, required: true, unique: true },
   password: { type: String, required: true },
-  profileImg: { type: String, default: "" },
+  profileImg: { type: String, default: "profile_pic-default.jpg" },
   bio: { type: String, default: "" },
-  plantsitting: { type: Boolean, default: false },
-  zip: { type: String, default: "" },
+  plantsitting: { type: String, default: "" },
+  city: { type: String, default: "" },
   repository: [{ type: Schema.Types.ObjectId, ref: "PlantInstance" }],
   wishlist: [],
   events: [{ type: Schema.Types.ObjectId, ref: "Event" }],

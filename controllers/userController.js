@@ -3,11 +3,16 @@ const bcrypt = require("bcrypt");
 
 const userController = {
   createUser: async (req, res) => {
-    const { username, password } = req.body;
+    const { username, password, plantsitting, city } = req.body;
     try {
       let user = await User.findOne({ username });
       if (user) return res.status(400).send("user already exists!");
-      user = new User({ username, password: await bcrypt.hash(password, 10) });
+      user = await new User({
+        username,
+        password: await bcrypt.hash(password, 10),
+        plantsitting,
+        city,
+      });
       await user.save();
       res.send(user);
     } catch (err) {
@@ -60,7 +65,7 @@ const userController = {
       await User.update(
         { username: username },
         {
-          profileImg: "some new info",
+          profileImg: file.filename,
         }
       );
     } catch (err) {
