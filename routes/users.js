@@ -17,7 +17,7 @@ router.post("/register", userController.createUser);
 
 // HANDLE WISHLIST PLANTS FOR CURR LOGGED IN USER
 router.post("/wish", authorizeUser, userController.addToWishlist);
-router.get("/wish", authorizeUser, userController.getWishlist);
+//router.get("/wish", authorizeUser, userController.getWishlist); // currently you're getting this from user context on login
 router.delete("/wish", authorizeUser, userController.deleteWishlistPlant);
 
 // UPLOAD PROFILE PICTURE

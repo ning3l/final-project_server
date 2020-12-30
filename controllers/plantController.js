@@ -15,11 +15,9 @@ const plantController = {
       .then((data) => res.json(data))
       .catch((err) => console.log(err.message));
   },
-  // maybe add these to a separate plant instance controller
-  // you need to put them on repo arr of that user
   createPlantInstance: async (req, res) => {
-    const { _id } = req.userPayload; // user id
-    const { id } = req.params; // this is the plant id
+    const { _id } = req.userPayload;
+    const { id } = req.params;
     try {
       const user = await User.findById(_id);
       const plantinstance = await new PlantInstance({
@@ -53,19 +51,19 @@ const plantController = {
       .then((data) => res.json(data))
       .catch((err) => console.log(err.message));
   },
-  // GET A USER REPO ON PAGE VISIT - you need to change id tho
+  // not yet implemented: see another users plant repo
   getUserRepo: async (req, res) => {
-    const { _id, username } = req.userPayload;
-    let userRepo;
-    try {
-      userRepo = await User.findById(_id, "repository").populate(
-        "repository",
-        PlantInstance
-      );
-      res.send(userRepo);
-    } catch (err) {
-      console.log(err);
-    }
+    // get username or user _id from req.params
+    // let userRepo;
+    // try {
+    //   userRepo = await User.findById(_id, "repository").populate(
+    //     "repository",
+    //     PlantInstance
+    //   );
+    //   res.send(userRepo);
+    // } catch (err) {
+    //   console.log(err);
+    // }
   },
   deletePlantInstance: async (req, res) => {
     try {
@@ -82,8 +80,6 @@ const plantController = {
   },
   updatePlantInstance: async (req, res) => {
     const { plantUpdateInput, id } = req.body;
-    // const edit = await PlantInstance.findOne({ _id: id });
-    // res.send(edit);
     try {
       let updatedInstance = await PlantInstance.findByIdAndUpdate(
         { _id: id },
@@ -99,24 +95,11 @@ const plantController = {
         },
         { new: true }
       ).populate("plant");
-      // await updatedInstance.save();
       res.send(updatedInstance);
     } catch (err) {
       console.log(err.message);
     }
   },
-  // deleteWishlistPlant: async (req, res) => {
-  //   try {
-  //     const { username } = req.userPayload;
-  //     const { name } = req.body;
-  //     await User.findOne({ username }).updateOne({
-  //       $pull: { wishlist: name },
-  //     });
-  //     res.send("success");
-  //   } catch (err) {
-  //     console.log(err.message);
-  //   }
-  // },
 };
 
 module.exports = plantController;

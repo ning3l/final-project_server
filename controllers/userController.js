@@ -14,7 +14,7 @@ const userController = {
         city,
       });
       await user.save();
-      res.send(user);
+      res.send({ username: user.username });
     } catch (err) {
       console.log(err.message);
     }
@@ -31,15 +31,16 @@ const userController = {
       console.log(err);
     }
   },
-  getWishlist: async (req, res) => {
-    const { username } = req.userPayload;
-    try {
-      const user = await User.findOne({ username });
-      res.send(user.wishlist);
-    } catch (err) {
-      console.log(err);
-    }
-  },
+  // can potentially be deleted, just take info from currUser call on /me
+  // getWishlist: async (req, res) => {
+  //   const { username } = req.userPayload;
+  //   try {
+  //     let user = await User.findOne({ username });
+  //     res.send(user.username);
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // },
   deleteWishlistPlant: async (req, res) => {
     try {
       const { username } = req.userPayload;
@@ -72,7 +73,6 @@ const userController = {
       console.log(err.message);
     }
     console.log(file);
-    // res.send("success");
     res.send({ pathToImage: `/${file.filename}` });
   },
 };

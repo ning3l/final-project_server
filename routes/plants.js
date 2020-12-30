@@ -3,19 +3,19 @@ const router = express.Router();
 const plantController = require("../controllers/plantController");
 const authorizeUser = require("../middleware/authorizeUser");
 
-// GET ALL PLANT ARCHETYPES
+// GET ALL PLANT ARCHETYPES FOR PLANT INDEX
 router.get("/", plantController.getAllPlants);
 
-// HANDLE PLANT INSTANCES
+// HANDLE PLANT INSTANCES OWNED BY CURR USER
 router.delete("/del", authorizeUser, plantController.deletePlantInstance);
 router.put("/update", authorizeUser, plantController.updatePlantInstance);
-router.get("/repository/me", authorizeUser, plantController.getAllRepo); // filters for user who made req
-router.get("/repository", authorizeUser, plantController.getUserRepo); // could give you so else's plants ???
+router.get("/repository/me", authorizeUser, plantController.getAllRepo); // get curr user's plants
+router.get("/repository", authorizeUser, plantController.getUserRepo); // see s.o. else's plants
 
-// GET SPECIFIC ARCHETYPE
+// GET SPECIFIC ARCHETYPE FOR DETAILS
 router.get("/:id", plantController.getSinglePlant);
 
-// GET SPECIFIC INSTANCE
+// CREATE NEW INSTANCE FROM WITHIN PLANT INDEX
 router.post("/:id", authorizeUser, plantController.createPlantInstance);
 
 module.exports = router;
