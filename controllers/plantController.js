@@ -79,19 +79,27 @@ const plantController = {
     }
   },
   updatePlantInstance: async (req, res) => {
-    const { plantUpdateInput, id } = req.body;
+    const { selectedPlant } = req.body;
     try {
       let updatedInstance = await PlantInstance.findByIdAndUpdate(
-        { _id: id },
+        { _id: selectedPlant._id },
         {
-          nickname: plantUpdateInput.nickname,
-          waterDate: plantUpdateInput.waterDate,
-          waterInterval: plantUpdateInput.waterInterval,
-          fertilizeDate: plantUpdateInput.fertilizeDate,
-          fertilizeInterval: plantUpdateInput.fertilizeInterval,
-          repotDate: plantUpdateInput.repotDate,
-          repotInterval: plantUpdateInput.repotInterval,
-          happiness: plantUpdateInput.happiness,
+          // nickname: plantUpdateInput.nickname,
+          // waterDate: plantUpdateInput.waterDate,
+          // waterInterval: plantUpdateInput.waterInterval,
+          // fertilizeDate: plantUpdateInput.fertilizeDate,
+          // fertilizeInterval: plantUpdateInput.fertilizeInterval,
+          // repotDate: plantUpdateInput.repotDate,
+          // repotInterval: plantUpdateInput.repotInterval,
+          // happiness: plantUpdateInput.happiness,
+          nickname: selectedPlant.nickname,
+          waterDate: selectedPlant.waterDate,
+          waterInterval: selectedPlant.waterInterval,
+          fertilizeDate: selectedPlant.fertilizeDate,
+          fertilizeInterval: selectedPlant.fertilizeInterval,
+          repotDate: selectedPlant.repotDate,
+          repotInterval: selectedPlant.repotInterval,
+          happiness: selectedPlant.happiness,
         },
         { new: true }
       ).populate("plant");

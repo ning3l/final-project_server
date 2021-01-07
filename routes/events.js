@@ -21,12 +21,10 @@ router.post("/leave", authorizeUser, eventController.leave);
 // CANCEL EVENT
 router.delete("/cancel", authorizeUser, eventController.delete);
 
-// to be implemented:
+// GET SINGLE EVENT
+router.get("/event/:id", eventController.getSingleEvent);
+
 // UPDATE EVENT
-router.put("/edit", authorizeUser, (req, res) => {
-  // find this specific event in all events
-  // overwrite curr data with new data
-  // send back updated el
-});
+router.put("/edit", authorizeUser, eventController.edit);
 
 module.exports = router;

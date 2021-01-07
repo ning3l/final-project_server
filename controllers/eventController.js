@@ -7,6 +7,16 @@ const eventController = {
       .then((data) => res.json(data))
       .catch((err) => console.log(err.message));
   },
+  getSingleEvent: async (req, res) => {
+    const { id } = req.params;
+    let event;
+    try {
+      event = await Event.findById(id).populate("attendees", User);
+      res.send(event);
+    } catch (err) {
+      console.log(err);
+    }
+  },
   getCurrUserEvents: async (req, res) => {
     const { _id } = req.userPayload;
     let userEvents;
@@ -27,6 +37,7 @@ const eventController = {
         title: req.body.title,
         description: req.body.description,
         date: req.body.date,
+        time: req.body.time,
         address: {
           street: req.body.street,
           number: req.body.number,
@@ -88,6 +99,28 @@ const eventController = {
       // finally delete event from events collection
       await Event.findOneAndRemove({ _id: eventId });
       res.send(event);
+    } catch (err) {
+      console.log(err);
+    }
+  },
+  edit: async (req, res) => {
+    try {
+      let eventToUpdate = await Event.findByIdAndUpdate(
+        { _id: selectedEvent._id },
+        {
+          title: selectedEvent.title,
+          date: selectedEvent.date,
+          time: selectedEvent.time,
+          description: selectedEvent.description,
+          street: selectedEvent.address.street,
+          number: selectedEvent.address.number,
+          zip: selectedEvent.address.zip,
+          city: selectedEvent.address.city,
+          img: selectedEvent.img,
+        },
+        { new: true }
+      );
+      res.send(eventToUpdate);
     } catch (err) {
       console.log(err);
     }
