@@ -84,14 +84,6 @@ const plantController = {
       let updatedInstance = await PlantInstance.findByIdAndUpdate(
         { _id: selectedPlant._id },
         {
-          // nickname: plantUpdateInput.nickname,
-          // waterDate: plantUpdateInput.waterDate,
-          // waterInterval: plantUpdateInput.waterInterval,
-          // fertilizeDate: plantUpdateInput.fertilizeDate,
-          // fertilizeInterval: plantUpdateInput.fertilizeInterval,
-          // repotDate: plantUpdateInput.repotDate,
-          // repotInterval: plantUpdateInput.repotInterval,
-          // happiness: plantUpdateInput.happiness,
           nickname: selectedPlant.nickname,
           waterDate: selectedPlant.waterDate,
           waterInterval: selectedPlant.waterInterval,
