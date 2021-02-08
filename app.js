@@ -12,6 +12,7 @@ var usersRouter = require("./routes/users");
 const plantRouter = require("./routes/plants");
 const authenticationRouter = require("./routes/authentication");
 const eventRouter = require("./routes/events");
+const messageRouter = require("./routes/messages");
 
 var app = express();
 
@@ -27,5 +28,6 @@ app.use("/api/users", usersRouter);
 app.use("/api/plants", plantRouter);
 app.use("/api/events", eventRouter);
 app.use("/api/auth", authenticationRouter);
+app.use("/api/messages", messageRouter);
 
 module.exports = app;

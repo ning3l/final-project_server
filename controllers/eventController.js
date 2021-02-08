@@ -2,10 +2,15 @@ const Event = require("../models/Event");
 const User = require("../models/User");
 
 const eventController = {
-  getAllEvents: (req, res) => {
+  getAllEvents: async (req, res) => {
     Event.find()
       .then((data) => res.json(data))
       .catch((err) => console.log(err.message));
+    // not yet implemented: A filter for past events
+    // need to be removed from attendees individual event arrays
+    // await Event.deleteMany({
+    //   date: { $gt: new Date().toJSON().slice(0, 10) },
+    // });
   },
   getSingleEvent: async (req, res) => {
     const { id } = req.params;
@@ -104,6 +109,7 @@ const eventController = {
     }
   },
   edit: async (req, res) => {
+    const { selectedEvent } = req.body;
     try {
       let eventToUpdate = await Event.findByIdAndUpdate(
         { _id: selectedEvent._id },
