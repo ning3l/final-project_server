@@ -6,11 +6,7 @@ const authorizeUser = require("../middleware/authorizeUser");
 const upload = require("../utils/uploadProfilePic");
 
 // GET ALL USERS
-router.get("/", function (req, res, next) {
-  User.find()
-    .then((data) => res.json(data))
-    .catch((err) => console.log(err));
-});
+router.get("/", userController.getAll);
 
 // REGISTER A NEW USER
 router.post("/register", userController.createUser);
@@ -30,5 +26,8 @@ router.post(
 // app.get("/profile-pic", (req, res) => {
 //   res.sendFile(path.join(__dirname, "index.html"));
 // });
+
+// GET A SPECIFIC USER
+router.get("/:id", userController.getSingleUser);
 
 module.exports = router;
