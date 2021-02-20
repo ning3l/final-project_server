@@ -2,6 +2,29 @@ const User = require("../models/User");
 const bcrypt = require("bcrypt");
 
 const userController = {
+  getAll: (req, res) => {
+    User.find()
+      .then((data) => res.json(data))
+      .catch((err) => console.log(err));
+  },
+  getSingleUser: async (req, res) => {
+    const { id } = req.params;
+    try {
+      let user = await User.findOne({ _id: id })
+        .populate("events")
+        .populate({
+          path: "repository",
+          model: "PlantInstance",
+          populate: {
+            path: "plant",
+            model: "Plant",
+          },
+        });
+      res.send(user);
+    } catch (err) {
+      console.log(err);
+    }
+  },
   createUser: async (req, res) => {
     const { username, password, plantsitting, city } = req.body;
     try {
@@ -31,16 +54,6 @@ const userController = {
       console.log(err);
     }
   },
-  // can potentially be deleted, just take info from currUser call on /me
-  // getWishlist: async (req, res) => {
-  //   const { username } = req.userPayload;
-  //   try {
-  //     let user = await User.findOne({ username });
-  //     res.send(user.username);
-  //   } catch (err) {
-  //     console.log(err);
-  //   }
-  // },
   deleteWishlistPlant: async (req, res) => {
     try {
       const { username } = req.userPayload;
