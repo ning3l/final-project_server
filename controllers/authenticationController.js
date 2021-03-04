@@ -7,7 +7,6 @@ const authenticationController = {
     const { username, password } = req.body;
     let user = await User.findOne({ username });
     if (!user) {
-      console.log("no user was found in db");
       res.status(400).send("invalid credentials!");
     } else {
       const match = await bcrypt.compare(password, user.password);
@@ -23,7 +22,6 @@ const authenticationController = {
   context: async (req, res) => {
     const { username } = req.userPayload;
     let user = await User.findOne({ username });
-    console.log("USER", user);
     if (!user) {
       return res.status(400).send("Invalid request");
     } else {

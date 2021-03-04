@@ -3,11 +3,7 @@ const Schema = mongoose.Schema;
 const add = require("date-fns/add");
 const format = require("date-fns/format");
 const addDays = require("date-fns/addDays");
-var {
-  differenceInCalendarDays,
-  differenceInDays,
-  isAfter,
-} = require("date-fns");
+var { differenceInDays, isAfter } = require("date-fns");
 
 const plantInstanceSchema = new Schema(
   {
@@ -63,19 +59,5 @@ plantInstanceSchema.virtual("repot.date").get(function () {
   let interval = Number(this.repotInterval);
   return calculateNotification(start, interval);
 });
-
-// APPROACH 2: Keeping a reference date
-// plantInstanceSchema.virtual("water.date").get(function () {
-//   let startDate = new Date(this.waterDate).toLocaleDateString("en-US");
-//   // if start === today > switch so that now today is your reference date
-//   let referenceDate =
-//     new Date(Date.now()).toLocaleDateString("en-US") === startDate
-//       ? Date.now()
-//       : undefined;
-//   let nextWatering = add(referenceDate || Date.parse(startDate), {
-//     days: Number(this.waterInterval),
-//   });
-//   return format(nextWatering, dateFormat);
-// });
 
 module.exports = mongoose.model("PlantInstance", plantInstanceSchema);

@@ -1,4 +1,5 @@
 const User = require("../models/User");
+const Message = require("../models/Message");
 const bcrypt = require("bcrypt");
 
 const userController = {
@@ -37,7 +38,15 @@ const userController = {
         city,
       });
       await user.save();
-      res.send({ username: user.username });
+      // create a welcome message for each user upon signup:
+      let welcome = await Message.create({
+        sender: "5ff8406b98a099640853f31a",
+        recipient: user._id,
+        text:
+          "hi there, this is laura - welcome to pl@net! start by browsing our plant catalog, check out upcoming events, or connect with other users by opening a conversation on their profile pages. pls feel free to message me anytime with feedback or suggestions for improvement. happy plant parenting!",
+      });
+      await welcome.save();
+      res.send(user);
     } catch (err) {
       console.log(err.message);
     }
@@ -85,7 +94,6 @@ const userController = {
     } catch (err) {
       console.log(err.message);
     }
-    console.log(file);
     res.send({ pathToImage: `/${file.filename}` });
   },
 };
