@@ -10,19 +10,12 @@ io.on("connection", (socket) => {
   socket.join(id);
 
   socket.on("send-message", async ({ recipient, text }) => {
-    console.log("recipient", recipient);
     let msg = await Message.create({
       recipient,
       sender: id,
       text,
     });
     socket.broadcast.to(recipient).emit("receive-message", msg);
-
-    // socket.broadcast.to(recipient).emit("receive-message", {
-    //   recipient,
-    //   sender: id,
-    //   text,
-    // });
   });
 });
 

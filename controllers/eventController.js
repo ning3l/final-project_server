@@ -7,7 +7,7 @@ const eventController = {
       .then((data) => res.json(data))
       .catch((err) => console.log(err.message));
     // not yet implemented: A filter for past events
-    // need to be removed from attendees individual event arrays
+    // need to be removed from attendees individual event arrays as well !
     // await Event.deleteMany({
     //   date: { $gt: new Date().toJSON().slice(0, 10) },
     // });
@@ -75,7 +75,6 @@ const eventController = {
   leave: async (req, res) => {
     const { eventId } = req.body;
     const { _id, username } = req.userPayload;
-    console.log(_id);
     try {
       // pull curr user from the attendees arr of this event
       await Event.findById(eventId).updateMany({
