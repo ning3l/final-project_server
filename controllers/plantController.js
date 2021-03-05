@@ -51,20 +51,6 @@ const plantController = {
       .then((data) => res.json(data))
       .catch((err) => console.log(err.message));
   },
-  // not yet implemented: see another users plant repo
-  getUserRepo: async (req, res) => {
-    // get username or user _id from req.params
-    // let userRepo;
-    // try {
-    //   userRepo = await User.findById(_id, "repository").populate(
-    //     "repository",
-    //     PlantInstance
-    //   );
-    //   res.send(userRepo);
-    // } catch (err) {
-    //   console.log(err);
-    // }
-  },
   deletePlantInstance: async (req, res) => {
     try {
       const { username } = req.userPayload;

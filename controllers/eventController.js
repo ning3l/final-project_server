@@ -64,13 +64,17 @@ const eventController = {
   attend: async (req, res) => {
     const { eventId } = req.body;
     const { _id } = req.userPayload;
-    const user = await User.findById(_id);
-    const event = await Event.findById({ _id: eventId });
-    await event.attendees.push(_id);
-    await user.events.push(event);
-    await event.save();
-    await user.save();
-    res.send(event);
+    try {
+      const user = await User.findById(_id);
+      const event = await Event.findById({ _id: eventId });
+      await event.attendees.push(_id);
+      await user.events.push(event);
+      await event.save();
+      await user.save();
+      res.send(event);
+    } catch (err) {
+      console.log(err);
+    }
   },
   leave: async (req, res) => {
     const { eventId } = req.body;

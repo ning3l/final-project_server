@@ -10,7 +10,6 @@ router.get("/", plantController.getAllPlants);
 router.delete("/del", authorizeUser, plantController.deletePlantInstance);
 router.put("/update", authorizeUser, plantController.updatePlantInstance);
 router.get("/repository/me", authorizeUser, plantController.getAllRepo); // get curr user's plants
-router.get("/repository", authorizeUser, plantController.getUserRepo); // see s.o. else's plants
 
 // GET SPECIFIC ARCHETYPE FOR DETAILS
 router.get("/:id", plantController.getSinglePlant);
