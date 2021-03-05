@@ -1,6 +1,6 @@
 # pl@net (backend)
 
-[ᐅ deployed version](https://plaenet.netlify.app)<br/>
+[ᐅ see live](https://plaenet.netlify.app)<br/>
 LOGIN<br/>
 FicusFriend (Benjamini)<br/>
 i_love_plants (daisy)
@@ -20,7 +20,7 @@ networking via attending events around the topic of indoor gardening. Current fe
 - Search/create/attend/leave events
 - See event details, including a map and which other users are attending
 - Browse for other users
-- Visit other user profiles and see which plants they own / which events they attend
+- Visit other user profiles and see which plants they own and which events they attend
 - A messenger feature using socket.io
 
 ## Technologies
