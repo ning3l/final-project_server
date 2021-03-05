@@ -1,5 +1,10 @@
 # pl@net (backend)
 
+[ᐅ deployed version](https://plaenet.netlify.app)<br/>
+LOGIN<br/>
+FicusFriend (Benjamini)<br/>
+i_love_plants (daisy)
+
 [ᐅ pl@net frontend](https://github.com/ning3l/instance-soup_fe)
 
 Backend for my final project @WBS Coding School. 
@@ -15,8 +20,8 @@ networking via attending events around the topic of indoor gardening. Current fe
 - Search/create/attend/leave events
 - See event details, including a map and which other users are attending
 - Browse for other users
-- [in progress] Visit other user profiles and see which plants they own
-- [in progress] A messenger feature using socket.io
+- Visit other user profiles and see which plants they own / which events they attend
+- A messenger feature using socket.io
 
 ## Technologies
 
@@ -25,11 +30,12 @@ networking via attending events around the topic of indoor gardening. Current fe
 - Express
 - MongoDB
 - JWT
+- Socket.io
 - Jira & Github for project management
 
 ## Features
 
-| Endpoint                      | Routes                        |
+| Endpoint                      | Route                         |
 | ----------------------------- | :---------------------------- |
 | GET (user context)            | /auth/me                      |
 | POST (login user)             | /auth/login                   |
@@ -39,7 +45,7 @@ networking via attending events around the topic of indoor gardening. Current fe
 | PUT (edit plant in user repo)  | /plants/:id                  |
 | DEL (delete plant from user repo)| /plants/:id                |
 | GET (all users)               | /users                        |
-| GET (specific user)                | /users/:id               |
+| GET (specific user)           | /users/:id                    |
 | GET (all events)              | /events                       |
 | GET (single event by id)      | /events/:id                   |
 | POST (create new event)       | /events/create                |
